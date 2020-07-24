@@ -99,43 +99,48 @@ class SortingRobot:
         # set counter for times of traverse (light on indicate traversed to the end)
         counter = 0
         n = len(self._list)
+
         # while counter <= n:
         while counter <= n:
-            # while robot_index < n:            
-            if self._position < n-1 - counter:
-                # # if can move R, pick up item [i] and move R
+            # while robot_index < n:
+
+            while self._position <= n:
+                # if can move R, pick up item [i] and move R
                 if self.can_move_right():
+                    # self._item = self._list[self._position]
                     self.swap_item()
                     self.move_right()
                 ## else  **if reached stop_at = n-counter cannot do this due to restriction, otherwise can sort faster**, light up, go all the way to L, light off, add 1 to counter,
-                                     
-                # compare item: 
+                else:
+
+                    self.set_light_on()
+                    while self.can_move_left():
+                        self.move_left()
+                    self.set_light_off()
+                    counter += 1
+                    break
+
+                # compare item:
                 # if self.item > item[i+1], swap, move L, drop item[i+1] to index i
-                    if self.compare_item() == 1:
-                        self.swap_item()
-                        self.move_left()
-                        self.swap_item()
-                        self.move_right()
-                    # else if self.item is smaller or equal, move L, drop item[0], and move R
-                    else:                    
-                        self.move_left()
-                        self.swap_item()
-                        self.move_right()                                          
-            # else if self position > n-counter, move all the way back    
-            else:
-                self.set_light_on()    
-                while self.can_move_left():
+                if self.compare_item() == 1:
+                    self.swap_item()
                     self.move_left()
-                self.set_light_off()
-                counter += 1
-                     
+                    self.swap_item()
+                    self.move_right()
+                # else if self.item is smaller or equal, move L, drop item[0], and move R
+                else:
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+
+                
             # do it recursively (start from 0 again) by using try and except
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
-    #l = [2, 1, 0]
+    #l = [3, 2, 1, 4]
     l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
     robot = SortingRobot(l)
